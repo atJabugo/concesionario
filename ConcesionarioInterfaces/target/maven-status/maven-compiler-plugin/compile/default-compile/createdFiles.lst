@@ -1,0 +1,13 @@
+com\atsistemas\concesionario\servicios\ServicioCliente.class
+com\atsistemas\concesionario\servicios\ServicioFactura.class
+com\atsistemas\concesionario\persistencia\FacturaDAO.class
+com\atsistemas\concesionario\servicios\ServicioComercial.class
+com\atsistemas\concesionario\roles\ServicioRolAdministrativo.class
+com\atsistemas\concesionario\roles\ServicioRolComercial.class
+com\atsistemas\concesionario\persistencia\VehiculoDAO.class
+com\atsistemas\concesionario\servicios\ServicioPedido.class
+com\atsistemas\concesionario\roles\ServicioRolGerente.class
+com\atsistemas\concesionario\persistencia\ClienteDAO.class
+com\atsistemas\concesionario\persistencia\ComercialDAO.class
+com\atsistemas\concesionario\persistencia\PedidoDAO.class
+com\atsistemas\concesionario\servicios\ServicioVehiculo.class
