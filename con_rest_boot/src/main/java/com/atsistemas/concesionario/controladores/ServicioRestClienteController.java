@@ -7,9 +7,8 @@ package com.atsistemas.concesionario.controladores;
 
 import com.atsistemas.concesionario.entidades.Cliente;
 import com.atsistemas.concesionario.servicio.Servicio;
+import java.security.Principal;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ServicioRestClienteController {
     
     Servicio servicio;
-    private static final Logger LOG = Logger.getLogger(ServicioRestClienteController.class.getName());
 
     @Autowired
     public ServicioRestClienteController(Servicio servicio) {
@@ -65,11 +63,7 @@ public class ServicioRestClienteController {
     @RequestMapping(path="/lista", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.GET)
     public ResponseEntity<List<Cliente>> listarClientes(HttpServletRequest request){
         List<Cliente> clientes = servicio.buscaClientes();
-        if (request.isUserInRole("COMERCIAL")){
-            LOG.log(Level.SEVERE, "Soy comercial");
-        } else {
-            LOG.log(Level.SEVERE, "No soy comercial");
-        }
+        Principal userPrincipal = request.getUserPrincipal();
         HttpStatus estado = clientes != null?HttpStatus.FOUND:HttpStatus.NOT_FOUND;
         return new ResponseEntity<>(clientes,estado);
     }
