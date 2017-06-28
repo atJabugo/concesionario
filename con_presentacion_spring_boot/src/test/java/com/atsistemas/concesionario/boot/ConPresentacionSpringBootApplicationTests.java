@@ -1,4 +1,4 @@
-package com.atsistemas.concesionario;
+package com.atsistemas.concesionario.boot;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

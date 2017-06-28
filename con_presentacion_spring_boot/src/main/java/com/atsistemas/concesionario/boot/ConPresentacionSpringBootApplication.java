@@ -1,4 +1,4 @@
-package com.atsistemas.concesionario;
+package com.atsistemas.concesionario.boot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
