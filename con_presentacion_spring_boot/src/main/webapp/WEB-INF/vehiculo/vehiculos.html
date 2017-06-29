@@ -93,36 +93,35 @@ and open the template in the editor.
                 </form>
             </div>
         </div>
-    </div>
-    <div data-th-if="${#lists.contains(session.authorities, 'ADMINISTRATIVO')}" id="registro" class = "w3-modal">
-        <div class="w3-modal-content w3-padding-large w3-card-4">
-            <form class="w3-container" method="POST" data-th-object="${vehiculo}" data-th-action="@{/vehiculo/alta}">
-                <i class="material-icons w3-text-red w3-display-topright w3-button" data-th-onclick="|w3.hide('#registro')|">clear</i>
+        <div data-th-if="${#lists.contains(session.authorities, 'ADMINISTRATIVO')}" id="registro" class = "w3-modal">
+            <div class="w3-modal-content w3-padding-large w3-card-4">
+                <form class="w3-container" method="POST" data-th-object="${vehiculo}" data-th-action="@{/vehiculo/alta}">
+                    <i class="material-icons w3-text-red w3-display-topright w3-button" data-th-onclick="|w3.hide('#registro')|">clear</i>
 
-                <label class="w3-text-teal">Modelo</label>
-                <input placeholder="Modelo" class="w3-input" type="text" data-th-field="*{modelo}"/>
+                    <label class="w3-text-teal">Modelo</label>
+                    <input placeholder="Modelo" class="w3-input" type="text" data-th-field="*{modelo}"/>
 
-                <label class="w3-text-teal">Motor</label>
-                <input placeholder="Motor" class="w3-input" type="text" data-th-field="*{motor}"/>
+                    <label class="w3-text-teal">Motor</label>
+                    <input placeholder="Motor" class="w3-input" type="text" data-th-field="*{motor}"/>
 
-                <label class="w3-text-teal">Color</label>
-                <input placeholder="Color" class="w3-input" type="text" data-th-field="*{color}"/>
+                    <label class="w3-text-teal">Color</label>
+                    <input placeholder="Color" class="w3-input" type="text" data-th-field="*{color}"/>
 
-                <label class="w3-text-teal">Precio</label>
-                <input placeholder="Precio" class="w3-input" type="number" data-th-field="*{precio}"/>
+                    <label class="w3-text-teal">Precio</label>
+                    <input placeholder="Precio" class="w3-input" type="number" data-th-field="*{precio}"/>
 
-                <label class="w3-text-teal">Descripcion</label>
-                <textarea placeholder="Descripcion"class="w3-input" data-th-field="*{descripcion}"></textarea>
+                    <label class="w3-text-teal">Descripcion</label>
+                    <textarea placeholder="Descripcion" class="w3-input" data-th-field="*{descripcion}"/>
 
-                <input type="submit" class="w3-btn w3-blue-grey w3-margin-top" value="Guardar"/>
-            </form>
+                    <input type="submit" class="w3-btn w3-blue-grey w3-margin-top" value="Guardar"/>
+                </form>
+            </div>
         </div>
-    </div>
-    <footer>
-        <div class="w3-bottom w3-light-grey w3-card-4 w3-bar w3-padding">
-            <button class="w3-btn w3-blue-grey w3-left" onclick="javascript:window.history.back()">Volver</button>
-            <button data-th-if="${#lists.contains(session.authorities, 'ADMINISTRATIVO')}" title="Nuevo Vehiculo" class="material-icons w3-btn w3-circle w3-blue-grey w3-right" data-th-onclick="|w3.show('#registro')|">add</button>
-        </div>
-    </footer>
-</body>
+        <footer>
+            <div class="w3-bottom w3-light-grey w3-card-4 w3-bar w3-padding">
+                <button class="w3-btn w3-blue-grey w3-left" onclick="javascript:window.history.back()">Volver</button>
+                <button data-th-if="${#lists.contains(session.authorities, 'ADMINISTRATIVO')}" title="Nuevo Vehiculo" class="material-icons w3-btn w3-circle w3-blue-grey w3-right" data-th-onclick="|w3.show('#registro')|">add</button>
+            </div>
+        </footer>
+    </body>
 </html>

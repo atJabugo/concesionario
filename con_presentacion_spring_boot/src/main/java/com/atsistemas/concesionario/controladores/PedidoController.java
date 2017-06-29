@@ -88,7 +88,7 @@ public class PedidoController {
                 referencia = "lista";
             }
         }
-        return "redirect:../"+referencia; //recojo el mapping que hace la referencia a este para volver al mismo (lista o id), por defecto lista
+        return "redirect:../../"+referencia; //recojo el mapping que hace la referencia a este para volver al mismo (lista o id), por defecto lista
     }
 
 }
