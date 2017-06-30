@@ -34,7 +34,7 @@ public class VehiculoController {
         HttpHeaders headers = new HttpHeaders();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
         SecurityTools.setContentTypeJSON(headers);
-        Vehiculo ve = restTemplate.postForObject("http://localhost:8080/con_rest/api/vehiculo/alta", vehiculo, Vehiculo.class, headers);
+        Vehiculo ve = restTemplate.postForObject("https://localhost:8080/con_rest/api/vehiculo/alta", vehiculo, Vehiculo.class, headers);
         return "redirect:lista";
     }
     
@@ -43,7 +43,7 @@ public class VehiculoController {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
-        List<Vehiculo> lista = restTemplate.getForObject("http://localhost:8080/con_rest/api/vehiculo/lista", List.class, headers);
+        List<Vehiculo> lista = restTemplate.getForObject("https://localhost:8080/con_rest/api/vehiculo/lista", List.class, headers);
         //Hay que añadir al modelo las variables que usará la plantilla, la lista que itera en la tabla y el vehículo que usará para el alta y la modificación
         modelo.addAttribute("lista", lista);
         modelo.addAttribute("vehiculo", new Vehiculo());
@@ -56,7 +56,7 @@ public class VehiculoController {
         HttpHeaders headers = new HttpHeaders();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
         SecurityTools.setContentTypeJSON(headers);
-        restTemplate.put("http://localhost:8080/con_rest/api/vehiculo/baja", vehiculo, headers);
+        restTemplate.put("https://localhost:8080/con_rest/api/vehiculo/baja", vehiculo, headers);
         return "redirect:lista";
     }
     
@@ -66,7 +66,7 @@ public class VehiculoController {
         HttpHeaders headers = new HttpHeaders();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
         HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
-        Vehiculo v = restTemplate.getForObject("http://localhost:8080/con_rest/api/vehiculo/"+id, Vehiculo.class, entity);
+        Vehiculo v = restTemplate.getForObject("https://localhost:8080/con_rest/api/vehiculo/"+id, Vehiculo.class, entity);
         modelo.addAttribute("vehiculo",v);
         return "vehiculo/detalle";
     }
@@ -77,7 +77,7 @@ public class VehiculoController {
         HttpHeaders headers = new HttpHeaders();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
         SecurityTools.setContentTypeJSON(headers);
-        restTemplate.postForObject("http://localhost:8080/con_rest/api/vehiculo/actualizar", vehiculo, Vehiculo.class, headers);
+        restTemplate.postForObject("https://localhost:8080/con_rest/api/vehiculo/actualizar", vehiculo, Vehiculo.class, headers);
         return "redirect:lista";
     }
 

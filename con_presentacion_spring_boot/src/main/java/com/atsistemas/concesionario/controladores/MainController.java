@@ -6,14 +6,18 @@
 package com.atsistemas.concesionario.controladores;
 
 import com.atsistemas.concesionario.entidades.security.Acceso;
-import com.atsistemas.concesionario.entidades.security.Rol;
 import com.atsistemas.concesionario.tools.SecurityTools;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLSession;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,56 +33,62 @@ import org.springframework.web.client.RestTemplate;
  */
 @Controller
 public class MainController {
-    
-    @RequestMapping("/")
-    public String entrada(HttpSession session){
-        String login = (String)session.getAttribute("login");
-        return login==null?"redirect:login":"redirect:inicio";
+
+    @Autowired
+    RestTemplate restTemplate;
+
+    static {
+        HttpsURLConnection.setDefaultHostnameVerifier((String hostname, SSLSession sslSession) -> hostname.equals("localhost"));
     }
-    
-    @RequestMapping(path= {"/inicio"})
-    public String inicio(){
+
+    @RequestMapping("/")
+    public String entrada(HttpSession session) {
+        String login = (String) session.getAttribute("login");
+        return login == null ? "redirect:login" : "redirect:inicio";
+    }
+
+    @RequestMapping(path = {"/inicio"})
+    public String inicio() {
         return "index";
     }
-    
+
     @RequestMapping(method = RequestMethod.GET, path = {"/login"})
-    public String login(Model modelo){
+    public String login(Model modelo) {
         modelo.addAttribute("acceso", new Acceso());
         return "login";
     }
-    
+
     @RequestMapping(method = RequestMethod.POST, path = {"/login"})
-    public String login(@ModelAttribute @Valid Acceso acceso, HttpSession session, HttpServletRequest request) throws ServletException{
-        RestTemplate restTemplate = new RestTemplate();
+    public String login(@ModelAttribute @Valid Acceso acceso, HttpSession session, HttpServletRequest request) throws ServletException, NoSuchAlgorithmException, KeyManagementException {
         HttpHeaders headers = new HttpHeaders();
         SecurityTools.setContentTypeJSON(headers);
+        SecurityTools.turnOffSslChecking();
         Acceso auth;
         String redirect = "login";
-        if (acceso.getUsuario() != null && !acceso.getUsuario().isEmpty() && acceso.getPassword() != null && !acceso.getPassword().isEmpty()){
-            auth = restTemplate.postForObject("http://localhost:8080/con_rest/api/login", acceso, Acceso.class, headers);
-        } 
-        else {
+        if (acceso.getUsuario() != null && !acceso.getUsuario().isEmpty() && acceso.getPassword() != null && !acceso.getPassword().isEmpty()) {
+            auth = restTemplate.postForObject("https://localhost:8080/con_rest/api/login", acceso, Acceso.class, headers);
+        } else {
             auth = null;
         }
-        if (auth!=null){
-            String userPass = auth.getUsername()+":"+auth.getPassword();
+        if (auth != null) {
+            String userPass = auth.getUsername() + ":" + auth.getPassword();
             userPass = Base64Utils.encodeToString(userPass.getBytes());
             session.setAttribute("login", userPass);
             List<String> roles = new ArrayList<>();
-            for (Rol rol : auth.getRoles()){
+            auth.getRoles().forEach((rol) -> {
                 roles.add(rol.toString());
-            }
+            });
             session.setAttribute("authorities", roles);
             redirect = "inicio";
         }
-        return "redirect:"+redirect;
+        return "redirect:" + redirect;
     }
-    
+
     @RequestMapping(path = {"/logout"})
-    public String logout(HttpSession session){
+    public String logout(HttpSession session) {
         session.removeAttribute("login");
         session.removeAttribute("authorities");
         return "redirect:login";
     }
-    
+
 }

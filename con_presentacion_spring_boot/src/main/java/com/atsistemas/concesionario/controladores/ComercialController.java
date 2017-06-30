@@ -33,7 +33,7 @@ public class ComercialController {
         HttpHeaders headers = new HttpHeaders();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
         SecurityTools.setContentTypeJSON(headers);
-        restTemplate.postForObject("http://localhost:8080/con_rest/api/comercial/alta", comercial, Comercial.class, headers);
+        restTemplate.postForObject("https://localhost:8080/con_rest/api/comercial/alta", comercial, Comercial.class, headers);
         return "redirect:lista";
     }
     
@@ -41,7 +41,7 @@ public class ComercialController {
     public String lista(Model modelo, HttpSession session){
         RestTemplate restTemplate = new RestTemplate();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
-        List<Comercial> lista = restTemplate.getForObject("http://localhost:8080/con_rest/api/comercial/lista", List.class);
+        List<Comercial> lista = restTemplate.getForObject("https://localhost:8080/con_rest/api/comercial/lista", List.class);
         //Hay que añadir al modelo las variables que usará la plantilla, la lista que itera en la tabla y el vehículo que usará para el alta y la modificación
         modelo.addAttribute("lista", lista);
         modelo.addAttribute("comercial", new Comercial());
@@ -54,7 +54,7 @@ public class ComercialController {
         HttpHeaders headers = new HttpHeaders();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
         SecurityTools.setContentTypeJSON(headers);
-        restTemplate.put("http://localhost:8080/con_rest/api/comercial/baja", comercial, headers);
+        restTemplate.put("https://localhost:8080/con_rest/api/comercial/baja", comercial, headers);
         return "redirect:lista";
     }
     
@@ -62,7 +62,7 @@ public class ComercialController {
     public String detalle(@PathVariable int id, Model modelo, HttpSession session){
         RestTemplate restTemplate = new RestTemplate();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
-        Comercial c = restTemplate.getForObject("http://localhost:8080/con_rest/api/comercial/"+id, Comercial.class);
+        Comercial c = restTemplate.getForObject("https://localhost:8080/con_rest/api/comercial/"+id, Comercial.class);
         modelo.addAttribute("comercial",c);
         return "comercial/detalle";
     }
@@ -73,7 +73,7 @@ public class ComercialController {
         HttpHeaders headers = new HttpHeaders();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
         SecurityTools.setContentTypeJSON(headers);
-        restTemplate.postForObject("http://localhost:8080/con_rest/api/comercial/actualizar", comercial, Comercial.class, headers);
+        restTemplate.postForObject("https://localhost:8080/con_rest/api/comercial/actualizar", comercial, Comercial.class, headers);
         return "redirect:lista";
     }
 

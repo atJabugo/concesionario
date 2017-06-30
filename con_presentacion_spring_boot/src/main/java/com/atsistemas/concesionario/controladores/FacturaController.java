@@ -29,7 +29,7 @@ public class FacturaController {
     public String lista(Model modelo, HttpSession session){
         RestTemplate restTemplate = new RestTemplate();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
-        List<Factura> lista = restTemplate.getForObject("http://localhost:8080/con_rest/api/factura/lista", List.class);
+        List<Factura> lista = restTemplate.getForObject("https://localhost:8080/con_rest/api/factura/lista", List.class);
         modelo.addAttribute("lista", lista);
         modelo.addAttribute("factura", new Factura());
         return "factura/facturas";
@@ -39,9 +39,9 @@ public class FacturaController {
     public String cierre(@PathVariable int id, Model modelo, HttpServletRequest request, HttpSession session){
         RestTemplate restTemplate = new RestTemplate();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
-        Factura v = restTemplate.getForObject("http://localhost:8080/con_rest/api/factura/cobro/"+id, Factura.class);
+        Factura v = restTemplate.getForObject("https://localhost:8080/con_rest/api/factura/cobro/"+id, Factura.class);
         if(v!=null && v.getPedido()!=null){
-            restTemplate.getForObject("http://localhost:8080/con_rest/api/pedido/entrega/"+v.getPedido().getId(), Pedido.class);
+            restTemplate.getForObject("https://localhost:8080/con_rest/api/pedido/entrega/"+v.getPedido().getId(), Pedido.class);
         }
         String referencia = request.getHeader("Referer");
         if (referencia != null && !referencia.isEmpty()){
@@ -59,7 +59,7 @@ public class FacturaController {
     public String detalle(@PathVariable int id, Model modelo, HttpSession session){
         RestTemplate restTemplate = new RestTemplate();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
-        Factura f = restTemplate.getForObject("http://localhost:8080/con_rest/api/factura/"+id, Factura.class);
+        Factura f = restTemplate.getForObject("https://localhost:8080/con_rest/api/factura/"+id, Factura.class);
         modelo.addAttribute("factura",f);
         return "factura/detalle";
     }

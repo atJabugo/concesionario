@@ -38,7 +38,7 @@ public class PedidoController {
         HttpHeaders headers = new HttpHeaders();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
         SecurityTools.setContentTypeJSON(headers);
-        restTemplate.postForObject("http://localhost:8080/con_rest/api/pedido/alta", pedido, Pedido.class, headers);
+        restTemplate.postForObject("https://localhost:8080/con_rest/api/pedido/alta", pedido, Pedido.class, headers);
         return "redirect:lista";
     }
     
@@ -46,15 +46,15 @@ public class PedidoController {
     public String lista(Model modelo, HttpSession session){
         RestTemplate restTemplate = new RestTemplate();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
-        List<Comercial> lista = restTemplate.getForObject("http://localhost:8080/con_rest/api/pedido/lista", List.class);
+        List<Comercial> lista = restTemplate.getForObject("https://localhost:8080/con_rest/api/pedido/lista", List.class);
         //Hay que añadir al modelo las variables que usará la plantilla, la lista que itera en la tabla y el vehículo que usará para el alta y la modificación
         modelo.addAttribute("lista", lista);
         modelo.addAttribute("pedido", new Pedido());
-        List<Cliente> clientes = restTemplate.getForObject("http://localhost:8080/con_rest/api/cliente/lista", List.class);
+        List<Cliente> clientes = restTemplate.getForObject("https://localhost:8080/con_rest/api/cliente/lista", List.class);
         modelo.addAttribute("clientes", clientes);
-        List<Comercial> comerciales = restTemplate.getForObject("http://localhost:8080/con_rest/api/comercial/lista", List.class);
+        List<Comercial> comerciales = restTemplate.getForObject("https://localhost:8080/con_rest/api/comercial/lista", List.class);
         modelo.addAttribute("comerciales", comerciales);
-        List<Vehiculo> vehiculos = restTemplate.getForObject("http://localhost:8080/con_rest/api/vehiculo/lista", List.class);
+        List<Vehiculo> vehiculos = restTemplate.getForObject("https://localhost:8080/con_rest/api/vehiculo/lista", List.class);
         modelo.addAttribute("vehi", vehiculos);
         modelo.addAttribute("vehiculo", new Vehiculo());
         return "pedido/pedidos";
@@ -64,7 +64,7 @@ public class PedidoController {
     public String detalle(@PathVariable int id, Model modelo, HttpSession session){
         RestTemplate restTemplate = new RestTemplate();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
-        Pedido p = restTemplate.getForObject("http://localhost:8080/con_rest/api/pedido/"+id, Pedido.class);
+        Pedido p = restTemplate.getForObject("https://localhost:8080/con_rest/api/pedido/"+id, Pedido.class);
         modelo.addAttribute("pedido",p);
         return "pedido/detalle";
     }
@@ -75,9 +75,9 @@ public class PedidoController {
         HttpHeaders headers = new HttpHeaders();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
         SecurityTools.setContentTypeJSON(headers);
-        Pedido p = restTemplate.getForObject("http://localhost:8080/con_rest/api/pedido/recepcion/"+id, Pedido.class);
+        Pedido p = restTemplate.getForObject("https://localhost:8080/con_rest/api/pedido/recepcion/"+id, Pedido.class);
         if(p!=null){
-            restTemplate.postForObject("http://localhost:8080/con_rest/api/factura/generarFactura", p, Factura.class, headers);
+            restTemplate.postForObject("https://localhost:8080/con_rest/api/factura/generarFactura", p, Factura.class, headers);
         }
         String referencia = request.getHeader("Referer");
         if (referencia != null && !referencia.isEmpty()){
