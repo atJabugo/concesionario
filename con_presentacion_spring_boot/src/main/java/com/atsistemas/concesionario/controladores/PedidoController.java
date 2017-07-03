@@ -15,6 +15,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,10 +32,12 @@ import org.springframework.web.client.RestTemplate;
 @Controller
 @RequestMapping("/pedido")
 public class PedidoController {
+    
+    @Autowired
+    RestTemplate restTemplate;
 
     @RequestMapping(path = "/alta", method = RequestMethod.POST)
     public String alta(@ModelAttribute @Valid Pedido pedido, HttpSession session) {
-        RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
         SecurityTools.setContentTypeJSON(headers);
@@ -44,7 +47,6 @@ public class PedidoController {
     
     @RequestMapping(path = {"","/","/lista"})
     public String lista(Model modelo, HttpSession session){
-        RestTemplate restTemplate = new RestTemplate();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
         List<Comercial> lista = restTemplate.getForObject("https://localhost:8080/con_rest/api/pedido/lista", List.class);
         //Hay que añadir al modelo las variables que usará la plantilla, la lista que itera en la tabla y el vehículo que usará para el alta y la modificación
@@ -62,7 +64,6 @@ public class PedidoController {
     
     @RequestMapping(path = "{id}")
     public String detalle(@PathVariable int id, Model modelo, HttpSession session){
-        RestTemplate restTemplate = new RestTemplate();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
         Pedido p = restTemplate.getForObject("https://localhost:8080/con_rest/api/pedido/"+id, Pedido.class);
         modelo.addAttribute("pedido",p);
@@ -71,7 +72,6 @@ public class PedidoController {
     
     @RequestMapping("/recepcion/{id}")
     public String recepcion(@PathVariable int id, HttpServletRequest request, HttpSession session) {
-        RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
         SecurityTools.setContentTypeJSON(headers);

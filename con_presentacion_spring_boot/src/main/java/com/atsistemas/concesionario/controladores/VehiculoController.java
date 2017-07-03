@@ -10,6 +10,7 @@ import com.atsistemas.concesionario.tools.SecurityTools;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
@@ -27,10 +28,12 @@ import org.springframework.web.client.RestTemplate;
 @Controller
 @RequestMapping("/vehiculo")
 public class VehiculoController {
+    
+    @Autowired
+    RestTemplate restTemplate;
 
     @RequestMapping(path = "/alta", method = RequestMethod.POST)
     public String alta(@ModelAttribute @Valid Vehiculo vehiculo, HttpSession session) {
-        RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
         SecurityTools.setContentTypeJSON(headers);
@@ -40,7 +43,6 @@ public class VehiculoController {
     
     @RequestMapping(path = {"","/","/lista"})
     public String lista(Model modelo, HttpSession session){
-        RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
         List<Vehiculo> lista = restTemplate.getForObject("https://localhost:8080/con_rest/api/vehiculo/lista", List.class, headers);
@@ -52,7 +54,6 @@ public class VehiculoController {
     
     @RequestMapping(path="/baja")
     public String baja(@ModelAttribute @Valid Vehiculo vehiculo, HttpSession session){
-        RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
         SecurityTools.setContentTypeJSON(headers);
@@ -62,7 +63,6 @@ public class VehiculoController {
     
     @RequestMapping(path = "{id}")
     public String detalle(@PathVariable int id, Model modelo, HttpSession session){
-        RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
         HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
@@ -73,7 +73,6 @@ public class VehiculoController {
     
     @RequestMapping(path = "/modifica")
     public String modifica(@ModelAttribute @Valid Vehiculo vehiculo, HttpSession session){
-        RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
         SecurityTools.setContentTypeJSON(headers);

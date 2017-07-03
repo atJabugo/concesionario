@@ -10,6 +10,7 @@ import com.atsistemas.concesionario.tools.SecurityTools;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,10 +27,12 @@ import org.springframework.web.client.RestTemplate;
 @Controller
 @RequestMapping("/comercial")
 public class ComercialController {
+    
+    @Autowired
+    RestTemplate restTemplate;
 
     @RequestMapping(path = "/alta", method = RequestMethod.POST)
     public String alta(@ModelAttribute @Valid Comercial comercial, HttpSession session) {
-        RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
         SecurityTools.setContentTypeJSON(headers);
@@ -39,7 +42,6 @@ public class ComercialController {
     
     @RequestMapping(path = {"","/","/lista"})
     public String lista(Model modelo, HttpSession session){
-        RestTemplate restTemplate = new RestTemplate();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
         List<Comercial> lista = restTemplate.getForObject("https://localhost:8080/con_rest/api/comercial/lista", List.class);
         //Hay que añadir al modelo las variables que usará la plantilla, la lista que itera en la tabla y el vehículo que usará para el alta y la modificación
@@ -50,7 +52,6 @@ public class ComercialController {
     
     @RequestMapping(path="/baja")
     public String baja(@ModelAttribute @Valid Comercial comercial, HttpSession session){
-        RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
         SecurityTools.setContentTypeJSON(headers);
@@ -60,7 +61,6 @@ public class ComercialController {
     
     @RequestMapping(path = "{id}")
     public String detalle(@PathVariable int id, Model modelo, HttpSession session){
-        RestTemplate restTemplate = new RestTemplate();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
         Comercial c = restTemplate.getForObject("https://localhost:8080/con_rest/api/comercial/"+id, Comercial.class);
         modelo.addAttribute("comercial",c);
@@ -69,7 +69,6 @@ public class ComercialController {
     
     @RequestMapping(path = "/modifica")
     public String modifica(@ModelAttribute @Valid Comercial comercial, HttpSession session){
-        RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         SecurityTools.setAuthority(restTemplate, (String)session.getAttribute("login"));
         SecurityTools.setContentTypeJSON(headers);
