@@ -24,3 +24,11 @@
 
 *mvnw*
 */mvnw*
+
+*.idea
+*/*.idea
+
+*.iml
+*/*.iml
+
+/con_presentacion_angular/nbproject/private/
